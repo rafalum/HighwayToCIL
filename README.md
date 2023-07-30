@@ -17,6 +17,15 @@ conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvi
 pip install -r requirements.txt
 ```
 
+## Download the models
+
+We provide checkpoints for the DLinkNet101_JPU and NL_DLinkNet34.
+
+```bash
+wget -O DLinkNet101_JPU.pth https://polybox.ethz.ch/index.php/s/SDHy5sud4bv6Paw/download
+wget -O NL_DLinkNet34.pth https://polybox.ethz.ch/index.php/s/5xlz1eghH3qoI4s/download
+```
+
 
 ## Run the models
 
@@ -62,6 +71,6 @@ python3 run.py train Unet --data_path dataset/kaggle --loss BCE --num_epochs 100
 ```
 2. Predict segmentation masks using the NL_DLinkNet34 and DLinkNet34 in ensemble mode
 ```bash
-python3 run.py predict DLinkNet34 NL_DLinkNet34 --data_path dataset/kaggle/test/images --checkpoint checkpoints/checkpoint_DLinkNet34.pth checkpoints/checkpoint_NL_DLinkNet34.pth--ensemble
+python3 run.py predict DLinkNet34 NL_DLinkNet34 --data_path dataset/kaggle/test/images --checkpoint checkpoints/DLinkNet34.pth checkpoints/NL_DLinkNet34.pth--ensemble
 ```
 
