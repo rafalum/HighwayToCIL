@@ -26,6 +26,8 @@ from utils.utils import np_to_tensor, create_submission, get_kaggle_prediction, 
 def predict(model, checkpoint, data_path, device):
     model.load_state_dict(torch.load(checkpoint))
 
+    model.eval()
+
     images = load_all_from_path(data_path)
 
     size = images.shape[1:3]
@@ -124,20 +126,21 @@ def main():
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
     models = []
-    if "Unet" in args.model:
-        models.append(UNet().to(device))
-    if "ResUnet" in args.model:
-        models.append(ResUNet().to(device))
-    if "LinkNet34" in args.model:
-        models.append(LinkNet34().to(device))
-    if "DLinkNet34" in args.model:
-        models.append(DLinkNet34().to(device))
-    if "DLinkNet101" in args.model:
-        models.append(DLinkNet101().to(device))
-    if "NL_DLinkNet34" in args.model:
-        models.append(NL_DLinkNet34().to(device))
-    if "DLinkNet101_JPU" in args.model:
-        models.append(DLinkNet101_JPU().to(device))
+    for model in args.model:
+        if "Unet" == model:
+            models.append(UNet().to(device))
+        elif "ResUnet" == model:
+            models.append(ResUNet().to(device))
+        elif "LinkNet34" == model:
+            models.append(LinkNet34().to(device))
+        elif "DLinkNet34" == model:
+            models.append(DLinkNet34().to(device))
+        elif "DLinkNet101" == model:
+            models.append(DLinkNet101().to(device))
+        elif "NL_DLinkNet34" == model:
+            models.append(NL_DLinkNet34().to(device))
+        elif "DLinkNet101_JPU" == model:
+            models.append(DLinkNet101_JPU().to(device))
 
     if args.action == "predict":
 
