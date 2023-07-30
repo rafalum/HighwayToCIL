@@ -34,8 +34,8 @@ def train(train_dataloader, eval_dataloader, model, loss_fn, metric_fns, optimiz
     history = {}  # collects metrics at the end of each epoch
 
     # early stopping initialization
-    patience = 50
-    best_loss = None
+    patience = 30
+    best_val_patch_acc = None
     best_epoch = None
     early_stop_counter = 0
 
@@ -74,22 +74,25 @@ def train(train_dataloader, eval_dataloader, model, loss_fn, metric_fns, optimiz
                 metrics['val_loss'].append(loss.item())
                 for k, fn in metric_fns.items():
                     metrics['val_'+k].append(fn(y_hat, y).item())
+                #print(metrics)
 
         # summarize metrics, log to tensorboard and display
         epoch_loss = sum(metrics['val_loss']) / len(metrics['val_loss'])
+        val_patch_acc = sum(metrics["val_patch_acc"]) / len(metrics["val_patch_acc"])
+
         history[epoch] = {k: sum(v) / len(v) for k, v in metrics.items()}
         for k, v in history[epoch].items():
           writer.add_scalar(k, v, epoch)
-        if epoch % 10 == 0:
+        if epoch % 20 == 0:
             print(' '.join(['\t- '+str(k)+' = '+str(v)+'\n ' for (k, v) in history[epoch].items()]))
             show_val_samples(x.detach().cpu().numpy(), y.detach().cpu().numpy(), y_hat.detach().cpu().numpy())
 
         # save model checkpoint if it has better loss
-        if best_loss is None or epoch_loss < best_loss:
+        if best_val_patch_acc is None or val_patch_acc > best_val_patch_acc:
             now = time.strftime("%H:%M-%d-%m-%Y")
             torch.save(model.state_dict(), f"{checkpoint_path}checkpoint_{model_name}_{n_epochs}ep_{now}.pth")
             torch.save(model.state_dict(), f"{checkpoint_path}last_checkpoint.pth")
-            best_loss = epoch_loss
+            best_val_patch_acc = val_patch_acc
             best_epoch = epoch
             early_stop_counter = 0
         else:
@@ -97,11 +100,11 @@ def train(train_dataloader, eval_dataloader, model, loss_fn, metric_fns, optimiz
 
         # early stopping
         if early_stop_counter >= patience:
-            print(f'Early stopping at epoch {epoch}, the lowest validation loss achieved at epoch {best_epoch}')
-            print(f'Best validation loss: {best_loss}')
+            print(f'Early stopping at epoch {epoch}, the lowest validation patch accuracy achieved at epoch {best_epoch}')
+            print(f'Best validation patch accuracy: {best_val_patch_acc}')
             break
             
-        lr_scheduler.step(int(np.mean(epoch_loss)))
+        lr_scheduler.step(int(np.mean(val_patch_acc)))
 
 
     print('Finished Training')
