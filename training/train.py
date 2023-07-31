@@ -91,7 +91,7 @@ def train(train_dataloader, eval_dataloader, model, loss_fn, metric_fns, optimiz
         if best_val_patch_acc is None or val_patch_acc > best_val_patch_acc:
             now = time.strftime("%H:%M-%d-%m-%Y")
             torch.save(model.state_dict(), f"{checkpoint_path}checkpoint_{model_name}_{n_epochs}ep_{now}.pth")
-            torch.save(model.state_dict(), f"{checkpoint_path}last_checkpoint.pth")
+            torch.save(model.state_dict(), f"{checkpoint_path}best_checkpoint.pth")
             best_val_patch_acc = val_patch_acc
             best_epoch = epoch
             early_stop_counter = 0
