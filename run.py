@@ -20,7 +20,8 @@ from training.metrics import accuracy_fn, patch_accuracy_fn
 from preprocessing.dataloader import ImageDataset
 from preprocessing.loading_utils import load_all_from_path
 
-from utils.utils import np_to_tensor, create_submission, get_kaggle_prediction, ensembling
+from utils.config import checkpoint_path, submission_path
+from utils.utils import np_to_tensor, create_submission, get_kaggle_prediction, ensembling, create_dir
 
 
 def predict(model, checkpoint, data_path, device):
@@ -183,13 +184,8 @@ def main():
         train(train_dataloader, val_dataloader, model, loss, metric_fns, optimizer, lr_scheduler, args.num_epochs, type(model).__name__)
 
 if __name__ == "__main__":
+
+    create_dir(checkpoint_path)
+    create_dir(submission_path)
+
     main()
-
-    
-        
-
-        
-
-
-
-
