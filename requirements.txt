@@ -1,0 +1,5 @@
+opencv-python
+tensorboard
+tqdm
+matplotlib
+ipywidgets
