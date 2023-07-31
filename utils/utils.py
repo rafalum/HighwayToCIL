@@ -81,11 +81,9 @@ def ensembling(predictions):
             
         
         
-        
-        
-        
-        
-        
-        
+def create_dir(directory_path):
 
-           
+    if not os.path.exists(directory_path):
+    # Create the directory if it doesn't exist
+        os.makedirs(directory_path)
+        print(f"Directory '{directory_path}' created.")
