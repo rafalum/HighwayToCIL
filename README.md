@@ -1,5 +1,11 @@
 # Road Segmentation: HighwayToCIL
 
+<div align="center">
+
+Eiman Alnuaimi, Alessandro Cabodi, Dimitri Francolla, Rafael Wanner
+
+</div>
+
 <p align="center">
   <img src="segmentation.png" width="615" height="389" alt="Segmentation Example">
 </p>
