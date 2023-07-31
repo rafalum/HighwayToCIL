@@ -63,21 +63,10 @@ def get_kaggle_prediction(raw_predictions):
     return kaggle_predictions
 
 
+# averages the predictions
 def ensembling(predictions):
 
-    scale_factor = 1 / len(predictions)
-
-    preds_scaled = []
-    for prediction in predictions:
-        tensor_scaled = []
-        for tensor in prediction:
-            tensor_scaled.append(scale_factor * tensor)
-
-        preds_scaled.append(tensor_scaled)
-
-    comb = np.add(preds_scaled[0], preds_scaled[1])
-
-    return comb
+    return np.sum(predictions, axis=0) / len(predictions)
             
         
         
