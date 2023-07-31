@@ -32,6 +32,12 @@ wget -O DLinkNet101_JPU.pth https://polybox.ethz.ch/index.php/s/SDHy5sud4bv6Paw/
 wget -O NL_DLinkNet34.pth https://polybox.ethz.ch/index.php/s/5xlz1eghH3qoI4s/download
 ```
 
+## Download the dataset
+
+```bash
+wget -O dataset.zip https://polybox.ethz.ch/index.php/s/gdZSy2zFOwIoGSI/download
+unzip dataset.zip
+```
 
 ## Run the models
 
